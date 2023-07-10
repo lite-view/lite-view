@@ -1,0 +1,24 @@
+{
+    "debug": true,
+    "app_url": null,
+    "location": "",
+    "app_name": "",
+    "app_env": "",
+    "app_key": "",
+    "jwt_secret": "",
+    "database": {
+        "mysql": {
+            "driver": "mysql",
+            "host": "host",
+            "port": 3306,
+            "username": "username",
+            "password": "password",
+            "dbname": "dbname",
+            "charset": "utf8mb4"
+        }
+    },
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379
+    }
+}

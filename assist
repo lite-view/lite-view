@@ -1,0 +1,31 @@
+<?php
+
+
+const WORKING_DIR = __FILE__;
+
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+
+if (empty($argv[1])) {
+    echo '缺少命令参数', PHP_EOL;
+    exit();
+}
+
+
+$built_in = [
+    'list',
+    'keyGenerate',
+];
+if (in_array($argv[1], $built_in)) {
+    call_user_func_array([new \App\Console\Kernel, $argv[1]], $argv);
+} else {
+    $cmd = \App\Console\Kernel::getCommand($argv);
+    if (empty($cmd)) {
+        echo '命令不存在', PHP_EOL;
+        exit();
+    }
+    $cmd->handle();
+}
+
+

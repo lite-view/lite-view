@@ -1,0 +1,26 @@
+{
+    "name": "lite-view/lite-view",
+    "description": "lite view",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.2",
+        "lite-view/framework": "^2.0",
+        "ext-redis": "*",
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "ext-curl": "*"
+    },
+    "authors": [
+        {
+            "name": "jaifire",
+            "email": "jaifiresong@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app"
+        }
+    }
+}
