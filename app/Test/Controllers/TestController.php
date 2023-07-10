@@ -3,12 +3,17 @@
 namespace App\Test\Controllers;
 
 
+use LiteView\Aides\Log;
+use LiteView\Curl\Lite;
+use LiteView\Kernel\Visitor;
+use LiteView\Redis\RedisCli;
+use LiteView\SQL\DB;
 
 class TestController
 {
     public function db(Visitor $visitor)
     {
-        $r = SQLSuid::select('users', 'id = 1')->prep()->one();
+        $r = DB::crud()->select('users', 'id = 1')->one();
         var_dump($r);
         RedisCli::select()->set('a', time(), 60);
         $r = RedisCli::select()->get('a');
