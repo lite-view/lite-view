@@ -15,7 +15,7 @@ if (empty($argv[1])) {
 
 $built_in = [
     'list',
-    'keyGenerate',
+    'init',
 ];
 if (in_array($argv[1], $built_in)) {
     call_user_func_array([new \App\Console\Kernel, $argv[1]], $argv);

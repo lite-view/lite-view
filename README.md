@@ -1,10 +1,10 @@
 # lite-view
 
 # 介绍
-PHP mini vc 框架
+PHP 轻量级 web 框架
 
 # 安装
-1. `composer create-project lite-view/app <myapp>`
+1. `composer create-project lite-view/lite-view <myapp>`
 
 2. nginx 添加配置
 ```
@@ -13,9 +13,9 @@ location / {
 }
 ```
 
-3. 创建配置文件
+3. 初始化项目，生成配置文件等
 ```
-复制 config.default.json 为 config.json
+php assist init
 ```
 
 # 启动本地调试服务

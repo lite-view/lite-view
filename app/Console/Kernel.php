@@ -30,9 +30,12 @@ class Kernel
         }
     }
 
-    // 创建 jwt_secret app_key
-    public function keyGenerate()
+    // 创建 配置信息
+    public function init()
     {
+        if (!file_exists(root_path('/config.json'))) {
+            copy(root_path('/config.default.json'), root_path('/config.json'));
+        }
         $string = file_get_contents(root_path('/config.json'));
         $arr = json_decode($string, true);
         $modify = false;
