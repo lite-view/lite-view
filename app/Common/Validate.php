@@ -71,6 +71,20 @@ class Validate
         return 0;
     }
 
+    public static function enum($val, $pattern = [])
+    {
+        $required = $pattern['required'] ?? false;
+        $list = $pattern['list'] ?? [];
+
+        if ($required && '' === strval($val)) {
+            return "不能为空";
+        }
+        if ($val && !in_array($val, $list)) {
+            return "不正确";
+        }
+        return 0;
+    }
+
     //ASCII
     public static function ascii($val, $pattern = [])
     {
@@ -154,7 +168,19 @@ class Validate
      * @param array $rules
      * @param array $validated
      * @param bool $deal_null
-     * @return mixed
+     * @return mixed <p>
+     * <code>
+     * $rules = [
+     *      ['type' => 'string', 'field' => 'name', 'label' => '姓名', 'required' => true],
+     *      ['type' => 'phone', 'field' => 'tel', 'label' => '电码号码', 'required' => true],
+     *      ['type' => 'string', 'field' => 'province', 'label' => '省', 'required' => true],
+     *      ['type' => 'string', 'field' => 'city', 'label' => '市', 'required' => true],
+     *      ['type' => 'string', 'field' => 'district', 'label' => '区', 'required' => true],
+     *      ['type' => 'string', 'field' => 'detail', 'label' => '详细收货地址', 'required' => true],
+     * ];
+     * $errMsg = Validate::work((array)$visitor->input(), $rules, $sql_data)
+     * </code>
+     * </p>
      */
     public static function work(array $data, array $rules, &$validated = null, $deal_null = false)
     {
