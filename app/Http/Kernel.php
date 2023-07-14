@@ -42,7 +42,7 @@ class Kernel
             $class = '\\App\\Http\\Middleware\\' . $one;
             $mid = new $class();
             if (method_exists($mid, 'after')) {
-                $mid->after($visitor);
+                $mid->after($visitor, $response);
             }
         }
 
