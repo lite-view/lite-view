@@ -8,7 +8,6 @@
         "lite-view/framework": "^3.0",
         "lite-view/sql": "^0.0.1",
         "lite-view/redis": "^0.0.1",
-        "lite-view/curl": "^0.0.1",
         "ext-redis": "*",
         "ext-json": "*",
         "ext-pdo": "*",
