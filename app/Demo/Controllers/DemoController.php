@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Test\Controllers;
+namespace App\Demo\Controllers;
 
 
 use LiteView\Aides\Log;
@@ -9,7 +9,7 @@ use LiteView\Kernel\Visitor;
 use LiteView\Redis\RedisCli;
 use LiteView\SQL\DB;
 
-class TestController
+class DemoController
 {
     public function db(Visitor $visitor)
     {

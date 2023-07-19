@@ -7,8 +7,8 @@ Route::get('/', function () {
     lite_view('welcome.php');
 }, ['SayHello']);
 
-Route::get('db', 'App\Test\Controllers\TestController@db');
-Route::post('log', 'App\Test\Controllers\TestController@log');
+Route::get('db', 'App\Demo\Controllers\DemoController@db');
+Route::post('log', 'App\Demo\Controllers\DemoController@log');
 
 Route::group(['prefix' => 'group', 'middleware' => []], function () {
     Route::get('exception', function () {
@@ -19,7 +19,7 @@ Route::group(['prefix' => 'group', 'middleware' => []], function () {
     });
 
     Route::group(['prefix' => 'test', 'middleware' => []], function () {
-        Route::any('curl', 'App\Test\Controllers\TestController@curl');
-        Route::any('render', 'App\Test\Controllers\TestController@render');
+        Route::any('curl', 'App\Demo\Controllers\DemoController@curl');
+        Route::any('render', 'App\Demo\Controllers\DemoController@render');
     });
 });

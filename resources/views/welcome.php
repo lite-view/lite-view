@@ -12,12 +12,12 @@
 <body>
 
 <div style="margin: auto;text-align: center;">
-    <a href="/db">数据库测试</a>
+    <a href="db">数据库测试</a>
     <a href="javascript:log()">日志测试</a>
-    <a href="/group/exception">exception</a>
-    <a href="/group/error">error</a>
-    <a href="/group/test/curl">curl测试</a>
-    <a href="/group/test/render">视图render测试</a>
+    <a href="group/exception">exception</a>
+    <a href="group/error">error</a>
+    <a href="group/test/curl">curl测试</a>
+    <a href="group/test/render">视图render测试</a>
 </div>
 
 <script>
