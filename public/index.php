@@ -21,6 +21,17 @@ foreach (glob(__DIR__ . '/../config/*') as $item) {
 }
 
 
+// 根据环境加载配置
+$env_config = root_path() . 'config.' . cfg('app_env') . '.json';
+if (file_exists($env_config)) {
+    $string = file_get_contents($env_config);
+    $config = json_decode($string, true);
+    foreach ($config as $name => $value) {
+        ToolMan::setCfg($name, $value);
+    }
+}
+
+
 $visitor = new LiteView\Kernel\Visitor();
 App\Http\Kernel::dispatch($visitor)->response();
 
