@@ -31,7 +31,12 @@ class Kernel
 
         // 请求处理
         if (is_callable($action)) {
-            $response = $action($visitor);
+            if (is_array($action)) {
+                list($class, $action) = $action;
+                $response = (new $class($visitor))->$action($visitor);
+            } else {
+                $response = $action($visitor);
+            }
         } else {
             list($class, $action) = explode('@', $action);
             $response = (new $class($visitor))->$action($visitor);
