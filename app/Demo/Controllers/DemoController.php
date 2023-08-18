@@ -3,17 +3,18 @@
 namespace App\Demo\Controllers;
 
 
-use LiteView\Aides\Log;
 use LiteView\Curl\Lite;
 use LiteView\Kernel\Visitor;
 use LiteView\Redis\RedisCli;
-use LiteView\SQL\DB;
+use LiteView\SQL\Crud;
+use LiteView\Utils\Log;
+
 
 class DemoController
 {
     public function db(Visitor $visitor)
     {
-        $r = DB::crud()->select('users', 'id = 1')->one();
+        $r = Crud::db()->select('users', 'id > 0')->prep()->one();
         var_dump($r);
         RedisCli::select()->set('a', time(), 60);
         $r = RedisCli::select()->get('a');

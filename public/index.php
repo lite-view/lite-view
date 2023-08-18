@@ -17,18 +17,7 @@ foreach (glob(__DIR__ . '/../routes/*') as $item) {
 foreach (glob(__DIR__ . '/../config/*') as $item) {
     $name = pathinfo($item)['filename'];
     $value = require_once $item;
-    ToolMan::setCfg($name, $value);
-}
-
-
-// 根据环境加载配置
-$env_config = root_path() . 'config.' . cfg('app_env') . '.json';
-if (file_exists($env_config)) {
-    $string = file_get_contents($env_config);
-    $config = json_decode($string, true);
-    foreach ($config as $name => $value) {
-        ToolMan::setCfg($name, $value);
-    }
+    LiteView\Support\ToolMan::setCfg($name, $value);
 }
 
 

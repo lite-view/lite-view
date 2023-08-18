@@ -5,9 +5,9 @@
     "license": "MIT",
     "require": {
         "php": ">=7.2",
-        "lite-view/framework": "^3.0",
-        "lite-view/sql": "^0.1",
-        "lite-view/redis": "0.0.1",
+        "lite-view/framework": "^3.1.0",
+        "lite-view/sql": "^0.1.0",
+        "lite-view/redis": "^0.1.0",
         "lite-view/curl": "0.0.1",
         "ext-redis": "*",
         "ext-json": "*",

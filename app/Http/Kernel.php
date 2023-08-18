@@ -4,12 +4,13 @@ namespace App\Http;
 
 use LiteView\Kernel\Route;
 use LiteView\Kernel\Visitor;
+use LiteView\Support\Dispatcher;
 
 class Kernel
 {
-
     public static function dispatch(Visitor $visitor)
     {
+        Dispatcher::checkEnv();
         try {
             $route = Route::current_route();
             list($action, $middleware) = array_values($route);
@@ -20,35 +21,19 @@ class Kernel
         // 前置中间件
         foreach ($middleware as $one) {
             $class = '\\App\\Http\\Middleware\\' . $one;
-            $mid = new $class();
-            if (method_exists($mid, 'handle')) {
-                $error = $mid->handle($visitor);
-                if ($error) {
-                    return new self($error);
-                }
+            $error = Dispatcher::before($visitor, new $class);
+            if ($error) {
+                return new self($error);
             }
         }
 
-        // 请求处理
-        if (is_callable($action)) {
-            if (is_array($action)) {
-                list($class, $action) = $action;
-                $response = (new $class($visitor))->$action($visitor);
-            } else {
-                $response = $action($visitor);
-            }
-        } else {
-            list($class, $action) = explode('@', $action);
-            $response = (new $class($visitor))->$action($visitor);
-        }
+        // 处理请求
+        $response = Dispatcher::work($visitor, $action);
 
         // 后置中间件
         foreach ($middleware as $one) {
             $class = '\\App\\Http\\Middleware\\' . $one;
-            $mid = new $class();
-            if (method_exists($mid, 'after')) {
-                $mid->after($visitor, $response);
-            }
+            Dispatcher::after($visitor, new $class, $response);
         }
 
         return new self($response);
