@@ -7,6 +7,17 @@ const WORKING_DIR = __FILE__;
 require_once __DIR__ . '/vendor/autoload.php';
 
 
+// 加载环境配置文件
+LiteView\Support\Dispatcher::checkEnv();
+
+// 加载配置文件
+foreach (glob(__DIR__ . '/../config/*') as $item) {
+    $name = pathinfo($item)['filename'];
+    $value = require_once $item;
+    LiteView\Support\ToolMan::setCfg($name, $value);
+}
+
+
 if (empty($argv[1])) {
     echo '缺少命令参数', PHP_EOL;
     exit();

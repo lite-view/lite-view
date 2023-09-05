@@ -10,7 +10,6 @@ class Kernel
 {
     public static function dispatch(Visitor $visitor)
     {
-        Dispatcher::checkEnv();
         try {
             $route = Route::current_route();
             list($action, $middleware) = array_values($route);

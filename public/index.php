@@ -12,6 +12,8 @@ foreach (glob(__DIR__ . '/../routes/*') as $item) {
     require_once $item;
 }
 
+// 加载环境配置文件
+LiteView\Support\Dispatcher::checkEnv();
 
 // 加载配置文件
 foreach (glob(__DIR__ . '/../config/*') as $item) {
