@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 
 
 use App\Console\Command;
-use LiteView\SQL\DB;
+use LiteView\SQL\Connect;
 
 
 class Migration extends Command
@@ -22,11 +22,11 @@ class Migration extends Command
     public function export()
     {
         $current = date('Y_m_d_His_');
-        $tables = DB::cursor()->query('show tables')->fetchAll();
+        $tables = Connect::db()->query('show tables')->fetchAll();
         foreach ($tables as $one) {
             $table = end($one);
-            $name = DB::cursor()->query("show create table `$table`")->fetchColumn(0);
-            $sql = DB::cursor()->query("show create table `$table`")->fetchColumn(1);
+            $name = Connect::db()->query("show create table `$table`")->fetchColumn(0);
+            $sql = Connect::db()->query("show create table `$table`")->fetchColumn(1);
             $path = root_path('database/migrations/') . $current . $name . '.sql';
             file_put_contents($path, $sql);
         }
@@ -42,7 +42,7 @@ class Migration extends Command
         foreach ($tables as $file) {
             $table_name = substr($file, 18, -4);
             try {
-                DB::cursor()->query("desc {$table_name}")->fetchColumn();
+                Connect::db()->query("desc {$table_name}")->fetchColumn();
                 //已存在
                 echo '已存在' . $table_name . PHP_EOL;
                 continue;
@@ -51,7 +51,7 @@ class Migration extends Command
             }
 
             $sql = file_get_contents(root_path('database/migrations/' . $file));
-            DB::cursor()->exec($sql);
+            Connect::db()->exec($sql);
             echo 'ok ' . $table_name . PHP_EOL;
         }
     }
@@ -64,10 +64,10 @@ class Migration extends Command
         $dt = $data[count($data) + $this->args(3, -1)];
         $tmp_table = $dt . '_' . $table;
         $sql = file_get_contents(root_path('database/migrations/' . $tmp_table . '.sql'));
-        DB::cursor()->exec(str_replace("`$table`", "`$tmp_table`", $sql));
+        Connect::db()->exec(str_replace("`$table`", "`$tmp_table`", $sql));
 
-        $old = DB::cursor()->query("desc $table")->fetchAll();
-        $new = DB::cursor()->query("desc $tmp_table")->fetchAll();
+        $old = Connect::db()->query("desc $table")->fetchAll();
+        $new = Connect::db()->query("desc $tmp_table")->fetchAll();
 
         $old = array_column($old, NULL, 'Field');
         $new = array_column($new, NULL, 'Field');
@@ -79,14 +79,14 @@ class Migration extends Command
             if (isset($old[$key])) {
                 if ($value != $old[$key]) {
                     //字段存在但不一至
-                    DB::cursor()->exec("ALTER TABLE `$table` MODIFY COLUMN `$Field` $Type $Null DEFAULT $Default");
+                    Connect::db()->exec("ALTER TABLE `$table` MODIFY COLUMN `$Field` $Type $Null DEFAULT $Default");
                 }
             } else {
                 //字段不存在，直接新增
-                DB::cursor()->exec("ALTER TABLE `$table` ADD COLUMN `$Field` $Type $Null DEFAULT $Default");
+                Connect::db()->exec("ALTER TABLE `$table` ADD COLUMN `$Field` $Type $Null DEFAULT $Default");
             }
         }
-        DB::cursor()->exec("drop table $tmp_table");
+        Connect::db()->exec("drop table $tmp_table");
         echo '同步成功';
     }
 

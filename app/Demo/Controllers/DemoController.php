@@ -12,6 +12,12 @@ use LiteView\Utils\Log;
 
 class DemoController
 {
+    public function hello(Visitor $visitor)
+    {
+        $name = $visitor->get('name', 'lite-view');
+        return ['name' => $name];
+    }
+
     public function db(Visitor $visitor)
     {
         $r = Crud::db()->select('users', 'id > 0')->prep()->one();

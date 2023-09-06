@@ -7,6 +7,7 @@ Route::get('/', function () {
     lite_view('welcome.php');
 }, ['SayHello']);
 
+Route::get('hello', [\App\Demo\Controllers\DemoController::class, 'hello']);
 Route::get('db', 'App\Demo\Controllers\DemoController@db');
 Route::post('log', 'App\Demo\Controllers\DemoController@log');
 

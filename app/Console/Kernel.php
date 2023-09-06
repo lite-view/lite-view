@@ -22,15 +22,17 @@ class Kernel
     // 打印列出所有命令
     public function list($argv)
     {
+        $commands = [];
         foreach (glob(__DIR__ . '/Commands/*') as $file) {
             $arr = pathinfo($file);
             $class = '\\App\\Console\\Commands\\' . $arr['filename'];
             $cmd = new $class($argv);
-            echo $cmd->signature, PHP_EOL;
+            $commands[] = $cmd->signature;
         }
+        echo implode(PHP_EOL, $commands);
     }
 
-    // 创建 配置信息
+    // 创建/初始化配置信息
     public function init()
     {
         if (!file_exists(root_path('/config.json'))) {
@@ -53,5 +55,10 @@ class Kernel
                 json_encode($arr, JSON_PRETTY_PRINT)
             );
         }
+    }
+
+    public function version()
+    {
+        echo 'v0.1.4';
     }
 }

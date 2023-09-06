@@ -7,10 +7,6 @@ const WORKING_DIR = __FILE__;
 require_once __DIR__ . '/vendor/autoload.php';
 
 
-// 加载环境配置文件
-LiteView\Support\Dispatcher::checkEnv();
-
-// 加载配置文件
 foreach (glob(__DIR__ . '/../config/*') as $item) {
     $name = pathinfo($item)['filename'];
     $value = require_once $item;
@@ -27,6 +23,7 @@ if (empty($argv[1])) {
 $built_in = [
     'list',
     'init',
+    'version',
 ];
 if (in_array($argv[1], $built_in)) {
     call_user_func_array([new \App\Console\Kernel, $argv[1]], $argv);
