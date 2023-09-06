@@ -1,6 +1,7 @@
 # lite-view是什么
 
-lite-view是基于php-fpm架构开发的一款超轻量的PHP web开发框架，它学习了laravel，YII，thinkPHP等框架易用，快速，灵活等优点
+lite-view是基于php-fpm架构开发的一款超轻量的PHP web开发框架，它学习了laravel，YII，thinkPHP等框架易用，快速，灵活等优点。
+
 
 # lite-view具有以下特点
 
@@ -29,6 +30,28 @@ php assist init
 # 启动本地调试服务
 
 `cd public && php -S 127.0.0.1:888`
+
+# 目录结构
+
+```
+├── app
+│       ├── Common # 公共方法
+│       ├── Console # 命令行
+│       ├── Demo # 入门示例，可删除
+│       └── Http
+│               ├── Middleware # 中件间都放这里
+│               └── Kernel.php # 框架核，分发请求，返回响应
+├── config # 配置文件
+├── public
+│       ├── .htaccess # apache 服务器配置
+│       └── index.php # 入口文件
+├── resources
+│       └── views # 视图都放这里
+├── routes # 路由都都这里
+│       └── web.php # 路由示例
+├── composer.json # composer 配置
+└── assist # 命令行助手入口
+ ```
 
 # 入门示例
 
