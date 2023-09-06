@@ -1,7 +1,7 @@
 # lite-view是什么
 > lite-view是基于php-fpm架构开发的一款超轻量的PHP web开发框架，它学习了laravel，YII，thinkPHP等框架易用，快速，灵活等优点。
 
-### 为什么不直用laravel，YII等框架 
+### 为什么不直接用laravel，YII等框架 
 - 对于类似h5等营销活动等小项目，可能会达到上千的并发访问数，在服务器有数量只有一台的情况下laravel基本办不到。如果对性能要求更高，推荐[webman](https://github.com/walkor/webman)
 - 接近原生，限制少，约定少，可定制性好
 
