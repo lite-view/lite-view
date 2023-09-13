@@ -17,6 +17,15 @@ Route::post('log', 'App\Demo\Controllers\DemoController@log');
 
 Route::group(['prefix' => 'group', 'middleware' => []], function () {
     Route::get('exception', function () {
+        class X extends \LiteView\Support\ExceptionHandler
+        {
+            public function handle(array $e, \Throwable $exception = null)
+            {
+                echo '自定义异常处理';
+            }
+        }
+        new X();
+
         throw new \Exception('my exception');
     });
     Route::get('error', function () {
