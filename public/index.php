@@ -17,10 +17,10 @@ foreach (glob(__DIR__ . '/../routes/*') as $item) {
 foreach (glob(__DIR__ . '/../config/*') as $item) {
     $name = pathinfo($item)['filename'];
     $value = require_once $item;
-    LiteView\Support\ToolMan::setCfg($name, $value);
+    \LiteView\Support\ToolMan::setCfg($name, $value);
 }
 
 
-$visitor = new LiteView\Kernel\Visitor();
-App\Http\Kernel::dispatch($visitor)->response();
+$visitor = new \LiteView\Kernel\Visitor();
+\App\Http\Kernel::dispatch($visitor)->response();
 
