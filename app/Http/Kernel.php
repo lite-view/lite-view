@@ -8,6 +8,18 @@ use LiteView\Support\Dispatcher;
 
 class Kernel
 {
+    /**
+     * The application's global HTTP middleware stack.
+     *
+     * These middleware are run during every request to your application.
+     *
+     * @var array
+     */
+    protected static $middleware = [
+
+    ];
+
+
     public static function dispatch(Visitor $visitor)
     {
         try {
@@ -17,12 +29,20 @@ class Kernel
             return new self('404 ' . $e->getMessage());
         }
 
+        //全局前置中间件
+        foreach (self::$middleware as $class) {
+            $errMsg = Dispatcher::before($visitor, new $class);
+            if ($errMsg) {
+                return new self($errMsg);
+            }
+        }
+
         // 前置中间件
         foreach ($middleware as $one) {
             $class = '\\App\\Http\\Middleware\\' . $one;
-            $error = Dispatcher::before($visitor, new $class);
-            if ($error) {
-                return new self($error);
+            $errMsg = Dispatcher::before($visitor, new $class);
+            if ($errMsg) {
+                return new self($errMsg);
             }
         }
 
@@ -32,6 +52,11 @@ class Kernel
         // 后置中间件
         foreach ($middleware as $one) {
             $class = '\\App\\Http\\Middleware\\' . $one;
+            Dispatcher::after($visitor, new $class, $response);
+        }
+
+        //全局后置中间件
+        foreach (self::$middleware as $class) {
             Dispatcher::after($visitor, new $class, $response);
         }
 
