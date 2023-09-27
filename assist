@@ -7,7 +7,7 @@ const WORKING_DIR = __FILE__;
 require_once __DIR__ . '/vendor/autoload.php';
 
 
-foreach (glob(__DIR__ . '/../config/*') as $item) {
+foreach (glob(__DIR__ . '/config/*') as $item) {
     $name = pathinfo($item)['filename'];
     $value = require_once $item;
     LiteView\Support\ToolMan::setCfg($name, $value);
