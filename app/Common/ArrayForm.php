@@ -16,12 +16,24 @@ class ArrayForm implements ArrayAccess
 {
     private $data;
 
-    public function __construct($data = [])
+    public function __construct($data = null)
     {
+        if (empty($data)) {
+            $data = [];
+        }
         $this->data = $data;
         foreach ($data as $field => $value) {
             $this->$field = $value;
         }
+    }
+
+    public function get($key, $default = null)
+    {
+        $arr = $this->data;
+        if (isset($arr[$key])) {
+            return $arr[$key];
+        }
+        return $default;
     }
 
     public function toArray()
