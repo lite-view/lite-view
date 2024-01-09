@@ -11,6 +11,7 @@ use LiteView\SQL\Connect;
 class Migration extends Command
 {
     public $signature = 'migration:(export|initialize|sync)';
+    public $brief = '数据迁移';
 
     public function handle()
     {

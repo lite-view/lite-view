@@ -23,15 +23,15 @@ class Kernel
     public function list($argv)
     {
         $commands = [
-            'list',
-            'init',
-            'version',
+            'list' . str_repeat(' ', 50 - strlen('list')) . '# 打印列出所有命令',
+            'init' . str_repeat(' ', 50 - strlen('init')) . '# 初始化配置信息',
+            'version' . str_repeat(' ', 50 - strlen('version')) . '# 打印当前版本',
         ];
         foreach (glob(__DIR__ . '/Commands/*') as $file) {
             $arr = pathinfo($file);
             $class = '\\App\\Console\\Commands\\' . $arr['filename'];
             $cmd = new $class($argv);
-            $commands[] = $cmd->signature;
+            $commands[] = $cmd->signature . str_repeat(' ', 50 - strlen($cmd->signature)) . '# ' . $cmd->brief;
         }
         echo implode(PHP_EOL, $commands);
     }

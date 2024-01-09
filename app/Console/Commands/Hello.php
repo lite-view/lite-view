@@ -9,6 +9,7 @@ use App\Console\Command;
 class Hello extends Command
 {
     public $signature = 'hello:(aa|bb|cc|abc)';
+    public $brief = '使用示例';
 
     public function handle()
     {
