@@ -22,7 +22,11 @@ class Kernel
     // 打印列出所有命令
     public function list($argv)
     {
-        $commands = [];
+        $commands = [
+            'list',
+            'init',
+            'version',
+        ];
         foreach (glob(__DIR__ . '/Commands/*') as $file) {
             $arr = pathinfo($file);
             $class = '\\App\\Console\\Commands\\' . $arr['filename'];
@@ -59,6 +63,6 @@ class Kernel
 
     public function version()
     {
-        echo 'v0.1.4';
+        echo 'v0.1.9';
     }
 }

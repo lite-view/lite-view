@@ -12,7 +12,7 @@ class Command
     public $arguments; //参数 $argv
 
 
-    public function __construct($params)
+    public function __construct($params = [])
     {
         $this->arguments = $params;
     }
