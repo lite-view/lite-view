@@ -26,7 +26,8 @@ class Kernel
             $route = Route::current_route();
             list($action, $middleware) = array_values($route);
         } catch (\Throwable $e) {
-            return new self('404 ' . $e->getMessage());
+            header("HTTP/1.1 404");
+            return new self($e->getMessage());
         }
 
         //全局前置中间件
