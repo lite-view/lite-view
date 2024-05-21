@@ -9,12 +9,12 @@
 # lite-view具有以下特点
 
 - 高性能。框架核心文件极少，接近原生PHP书写的性能
-- 高复用。无需修改，可以复用绝大部分composer组件及类库。
+- 高复用。无需修改，可以复用几乎所有composer组件及类库。
 - 超级简单易用，学习成本极低，代码书写与传统框架没有区别。
 
 # 安装
 
-1. `composer create-project lite-view/lite-view <项目名称>`
+1. `composer create-project lite-view/lite-view <project-name>`
 
 2. nginx 添加配置
 
@@ -43,7 +43,7 @@ php assist init
 │       ├── Demo # 入门示例，可删除
 │       └── Http
 │               ├── Middleware # 中件间都放这里
-│               └── Kernel.php # 框架核，分发请求，返回响应
+│               └── Kernel.php # 框架核心，主要用于分发请求和返回响应
 ├── config # 配置文件
 ├── public
 │       ├── .htaccess # apache 服务器配置
@@ -64,7 +64,7 @@ php assist init
 
 ## 请求
 
-lite-view 会自动将请求 封装成一个 Visitor 对象注入到 action 方法第一个参数中，例如
+lite-view 会自动将请求封装成一个 Visitor 对象注入到 action 方法的第一个参数，例如
 
 ```
     public function hello(Visitor $visitor)
@@ -74,11 +74,13 @@ lite-view 会自动将请求 封装成一个 Visitor 对象注入到 action 方�
     }
 ```
 
-- 通过`$visitor`对象我们能获取到请求相关的任何数据。 获取整个get数组
-`$visitor->get();`
-- 获取get数组的某一个值
-`$visitor->get('name',$default_value);`
-- 获取整个get数组 $visitor->post(); 从post get 的集合中获取某个值。 $visitor->input(); 从post get的集合中获取部分数据。
+- 通过`$visitor`对象我们能获取到请求相关的任何数据。
+- 获取整个get数组`$visitor->get();`
+- 获取get数组的某一个值`$visitor->get('name',$default_value);`
+- 获取整个post数组 `$visitor->post();`
+- 获取post数组的某一个值`$visitor->post('name',$default_value);`
+- 从post get 数组合并在一起 `$visitor->input();`
+- 从post get 数组中获某个值 `$visitor->input('name',$default_value);`
 
 ```
 // 获取 username 和 password 组成的数组，如果对应的key没有则忽略
@@ -87,11 +89,12 @@ $only = $request->only(['username', 'password']);
 $except = $request->except(['avatar', 'age']);
 ```
 
-- 获取请求路径 $visitor->currentPath(); 获取请求uri $visitor->currentUri();
+- 获取请求路径 $visitor->currentPath();
+- 获取请求uri $visitor->currentUri();
 
 ## 响应
 
-lite-view 会自动判断 action 返回的数据并输出，参考：App\Http\Kernel@response
+lite-view 会自动判断 action 返回的数据类型并输出，参考：App\Http\Kernel@response
 
 ```
     public function response()
@@ -148,7 +151,7 @@ Route::group(['prefix' => 'group', 'middleware' => []], function () {
 });
 ```
 
-控制器就是一个普通的类，如果在路由中添加了控制器的方法，lite-view 会自动将请求 封装成一个 Visitor 对象注入到控制器方法的第一个参数，例如
+控制器就是一个普通的类，如果在路由中添加了控制器的方法，lite-view 会自动将请求封装成一个 Visitor 对象注入到控制器方法的第一个参数，例如
 
 ```
 Route::get('hello', [\App\Demo\Controllers\DemoController::class, 'hello']);
@@ -172,18 +175,18 @@ Route::get('/', function () {
 - 中间件分为前置和后置，前置是指执行控制器方法前执行，后置是指执行控制器方法后执行
 - 中间件就是一个普通的类，，只是做了一些约定如下：
   - 前置中间件约定方法名称为：handle，lite-view 会自动将请求封装成一个 Visitor 作为第一个参数，如果返回不为0，请求将会终止并输出返回信息
-  - 后置中间件约定方法名称为：after，lite-view 会自动将请求封装成一个 Visitor 作为第一个参数，将响应作为第二个参数
+  - 后置中间件约定方法名称为：after，lite-view 会自动将请求封装成一个 Visitor 作为第一个参数，将响应数组作为第二个参数
 - 示例：
 ```
 class SayHello
 {
-    public function handle()
+    public function handle(Visitor $visitor)
     {
         echo '<div style="text-align: center;height: 100px;">hello LiteView</div>';
         return 0;
     }
 
-    public function after()
+    public function after(Visitor $visitor, &$data=null)
     {
         echo '<div style="text-align: center;height: 100px;">处理完成后！</div>';
     }
@@ -226,8 +229,7 @@ Log::info('info);
 - 那么如果存在 config.test.json 的话会自动加载该配置文件，会自动合并，注意，配置项的字段不能重名
 
 2. 在config/目录下PHP文件
-- 一些不会根据环境变化的配置信息可以写在这，自动将文件名作为配置字段名
-- 注意，配置项的字段不能重名，
+- 一些不会根据环境变化的配置信息可以写在这，自动将文件名作为配置字段名，注意，配置项的字段不能重名，
 
 - 获取所有配置
 cfg()
@@ -275,7 +277,7 @@ use LiteView\SQL\Connect;
 Crud::db()->select('users', 'id > 0')->prep()->one();
 # 查全部
 Crud::db()->select('users', 'id > 0')->prep()->all();
-# 分面
+# 分页
 Crud::db()->select('users', 'id > 0')->prep()->paginate();
 # 单个字段 
 Crud::db()->select('users', 'id > 0')->prep()->column();
