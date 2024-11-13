@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}默认标题{% endblock %}</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>网站头部</h1>
+    <nav>
+        <ul>
+            <li><a href="#">首页</a></li>
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系我们</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    {% block content %}
+        这里是默认内容区域
+    {% endblock %}
+</main>
+<footer>
+    <p>版权所有 &copy; 2024</p>
+</footer>
+</body>
+</html>

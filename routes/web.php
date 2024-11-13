@@ -2,14 +2,10 @@
 
 use LiteView\Kernel\Route;
 
-
 Route::get('/', function () {
-    lite_view('welcome.php');
+    lite_view('test.twig', ['title' => 'web', 'a' => 1]);
 }, ['SayHello']);
 
-Route::get('config', function () {
-    dump(cfg());
-});
 
 Route::get('hello', [\App\Demo\Controllers\DemoController::class, 'hello']);
 Route::get('db', 'App\Demo\Controllers\DemoController@db');
@@ -24,6 +20,7 @@ Route::group(['prefix' => 'group', 'middleware' => []], function () {
                 echo '自定义异常处理';
             }
         }
+
         new X();
 
         throw new \Exception('my exception');
