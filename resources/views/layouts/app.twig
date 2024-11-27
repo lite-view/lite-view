@@ -1,27 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{% block title %}默认标题{% endblock %}</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}默认title{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
-<body>
-<header>
-    <h1>网站头部</h1>
-    <nav>
-        <ul>
-            <li><a href="#">首页</a></li>
-            <li><a href="#">关于我们</a></li>
-            <li><a href="#">联系我们</a></li>
-        </ul>
-    </nav>
-</header>
-<main>
-    {% block content %}
-        这里是默认内容区域
-    {% endblock %}
-</main>
-<footer>
-    <p>版权所有 &copy; 2024</p>
-</footer>
+<body class="antialiased bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center justify-center">
+{% block content %}
+    默认content
+{% endblock %}
 </body>
 </html>

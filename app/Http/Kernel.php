@@ -20,17 +20,15 @@ class Kernel
     ];
 
 
-    public static function dispatch(Visitor $visitor)
+    public static function dispatch(Visitor $visitor): Kernel
     {
-        try {
-            $route = Route::current_route();
-            list($action, $middleware) = array_values($route);
-        } catch (\Throwable $e) {
+        list($target, $params) = Route::match();
+        if (empty($target)) {
             header("HTTP/1.1 404");
-            return new self($e->getMessage());
+            return new self('route not found');
         }
 
-        //全局前置中间件
+        // 全局前置中间件
         foreach (self::$middleware as $class) {
             $errMsg = Dispatcher::before($visitor, new $class);
             if ($errMsg) {
@@ -39,8 +37,8 @@ class Kernel
         }
 
         // 前置中间件
-        foreach ($middleware as $one) {
-            $class = '\\App\\Http\\Middleware\\' . $one;
+        foreach ($target['middleware'] as $one) {
+            $class  = '\\App\\Http\\Middleware\\' . $one;
             $errMsg = Dispatcher::before($visitor, new $class);
             if ($errMsg) {
                 return new self($errMsg);
@@ -48,15 +46,15 @@ class Kernel
         }
 
         // 处理请求
-        $response = Dispatcher::work($visitor, $action);
+        $response = Dispatcher::work($target, $params, $visitor);
 
         // 后置中间件
-        foreach ($middleware as $one) {
+        foreach ($target['middleware'] as $one) {
             $class = '\\App\\Http\\Middleware\\' . $one;
             Dispatcher::after($visitor, new $class, $response);
         }
 
-        //全局后置中间件
+        // 全局后置中间件
         foreach (self::$middleware as $class) {
             Dispatcher::after($visitor, new $class, $response);
         }

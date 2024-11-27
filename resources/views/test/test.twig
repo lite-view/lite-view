@@ -1,0 +1,54 @@
+<div class="bg-white rounded-lg shadow-xl p-8 text-center">
+    <h1 class="text-5xl font-extrabold mb-6  ">
+        测试
+    </h1>
+    <p class="text-lg mb-8 text-gray-200">
+        点击进行测试相关功能
+    </p>
+
+    <!-- 按钮组 -->
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <a href="/db" class="btn">
+            数据库测试
+        </a>
+        <a href="javascript:log()" class="btn">
+            日志测试
+        </a>
+        <a href="/group/exception" class="btn">
+            exception
+        </a>
+        <a href="/group/error" class="btn">
+            error
+        </a>
+        <a href="/group/test/curl" class="btn">
+            curl 测试
+        </a>
+        <a href="/group/test/render" class="btn">
+            视图 render 测试
+        </a>
+    </div>
+</div>
+
+<script>
+    function xhr(fd, url) {
+        var request = new XMLHttpRequest();
+        request.open('POST', url);
+
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                if (request.status === 200) {
+                    let rsp = JSON.parse(request.responseText);
+                    console.log(rsp);
+                    alert(rsp.message);
+                }
+            }
+        };
+        request.send(fd);
+    }
+
+    function log() {
+        var fd = new FormData();
+        fd.append('msg', 'test log');
+        xhr(fd, '/log');
+    }
+</script>

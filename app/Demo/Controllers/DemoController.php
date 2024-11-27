@@ -36,7 +36,7 @@ class DemoController
 
     public function render()
     {
-        lite_view('test/test.php', [], 'layout.php');
+        return lite_view('test/test.twig', ['t' => time()]);
     }
 
     public function curl()

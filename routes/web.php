@@ -3,8 +3,8 @@
 use LiteView\Kernel\Route;
 
 Route::get('/', function () {
-    lite_view('test.twig', ['title' => 'web', 'a' => 1]);
-}, ['SayHello']);
+    return lite_view('welcome.twig');
+});
 
 
 Route::get('hello', [\App\Demo\Controllers\DemoController::class, 'hello']);
