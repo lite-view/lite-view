@@ -3,16 +3,15 @@
 namespace App\Http\Middleware;
 
 
+use LiteView\Kernel\Visitor;
+
 class SayHello
 {
-    public function handle()
+    public function handle(Visitor $visitor, \Closure $next)
     {
-        echo '<div style="text-align: center;height: 100px;">hello LiteView</div>';
-        return 0;
-    }
-
-    public function after()
-    {
-        echo '<div style="text-align: center;height: 100px;">处理完成后！</div>';
+        echo '<div style="text-align: center;height: 100px;">控制器运行之前</div>';
+        $response = $next($visitor);
+        echo '<div style="text-align: center;height: 100px;">控制器运行之后</div>';
+        return $response;
     }
 }

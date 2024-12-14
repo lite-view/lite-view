@@ -12,9 +12,10 @@ use LiteView\Utils\Log;
 
 class DemoController
 {
-    public function hello(Visitor $visitor)
+    public function hello(Visitor $visitor, $name = 'lite-view')
     {
-        $name = $visitor->get('name', 'lite-view');
+        echo '控制器运行...';
+        $name = $visitor->get('name', $name);
         return ['name' => $name];
     }
 

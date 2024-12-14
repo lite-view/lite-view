@@ -7,7 +7,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('hello', [\App\Demo\Controllers\DemoController::class, 'hello']);
+Route::get('hello/{name?}', [\App\Demo\Controllers\DemoController::class, 'hello'], ['SayHello']);
 Route::get('db', 'App\Demo\Controllers\DemoController@db');
 Route::post('log', 'App\Demo\Controllers\DemoController@log');
 

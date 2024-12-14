@@ -28,37 +28,28 @@ class Kernel
             return new self('route not found');
         }
 
-        // 全局前置中间件
+        $middleware = [];
+        // 全局中间件
         foreach (self::$middleware as $class) {
-            $errMsg = Dispatcher::before($visitor, new $class);
-            if ($errMsg) {
-                return new self($errMsg);
-            }
+            $middleware[] = $class;
         }
-
-        // 前置中间件
-        foreach ($target['middleware'] as $one) {
-            $class  = '\\App\\Http\\Middleware\\' . $one;
-            $errMsg = Dispatcher::before($visitor, new $class);
-            if ($errMsg) {
-                return new self($errMsg);
+        // 组装路由中间件
+        foreach ($target['middleware'] as $class) {
+            if (!class_exists($class)) {
+                $class = '\\App\\Http\\Middleware\\' . $class;
             }
+            $middleware[] = $class;
         }
+        $target['middleware'] = $middleware;
 
         // 处理请求
-        $response = Dispatcher::work($target, $params, $visitor);
-
-        // 后置中间件
-        foreach ($target['middleware'] as $one) {
-            $class = '\\App\\Http\\Middleware\\' . $one;
-            Dispatcher::after($visitor, new $class, $response);
+        $args = [];
+        foreach ($params as $param) {
+            if ('' !== $param) {
+                $args[] = $param;
+            }
         }
-
-        // 全局后置中间件
-        foreach (self::$middleware as $class) {
-            Dispatcher::after($visitor, new $class, $response);
-        }
-
+        $response = Dispatcher::work($target, $args, $visitor);
         return new self($response);
     }
 
