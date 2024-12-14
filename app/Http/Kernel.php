@@ -44,9 +44,9 @@ class Kernel
 
         // 处理请求
         $args = [];
-        foreach ($params as $param) {
-            if ('' !== $param) {
-                $args[] = $param;
+        if (is_array($params)) {
+            foreach ($params as $param) {
+                if ('' !== $param) $args[] = $param;
             }
         }
         $response = Dispatcher::work($target, $args, $visitor);
