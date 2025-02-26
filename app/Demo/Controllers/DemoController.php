@@ -4,6 +4,7 @@ namespace App\Demo\Controllers;
 
 
 use LiteView\Curl\Lite;
+use LiteView\Kernel\View;
 use LiteView\Kernel\Visitor;
 use LiteView\Redis\RedisCli;
 use LiteView\SQL\Crud;
@@ -37,7 +38,7 @@ class DemoController
 
     public function render()
     {
-        return lite_view('test/test.twig', ['t' => time()]);
+        return View::renderTwig('test/test.twig', ['t' => time()]);
     }
 
     public function curl()

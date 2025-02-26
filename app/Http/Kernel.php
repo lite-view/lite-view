@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use LiteView\Kernel\Route;
+use LiteView\Kernel\View;
 use LiteView\Kernel\Visitor;
 use LiteView\Support\Dispatcher;
 
@@ -49,6 +50,8 @@ class Kernel
                 if ('' !== $param) $args[] = $param;
             }
         }
+
+        View::setVisitor($visitor);
         $response = Dispatcher::work($target, $args, $visitor);
         return new self($response);
     }

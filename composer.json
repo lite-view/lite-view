@@ -3,6 +3,12 @@
     "description": "lite view",
     "type": "project",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "jaifire",
+            "email": "jaifiresong@gmail.com"
+        }
+    ],
     "require": {
         "php": ">=7.2",
         "lite-view/framework": "^4.0.0",
@@ -15,12 +21,6 @@
         "ext-curl": "*",
         "ext-mbstring": "*"
     },
-    "authors": [
-        {
-            "name": "jaifire",
-            "email": "jaifiresong@gmail.com"
-        }
-    ],
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
