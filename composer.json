@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
+        "php": "^7.2 || ^8.0",
         "lite-view/framework": "^4.0.0",
         "lite-view/sql": "^0.1.0",
         "lite-view/redis": "^0.1.0",
