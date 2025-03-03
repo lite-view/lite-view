@@ -32,7 +32,12 @@ php assist init
 
 # 启动本地调试服务
 
-`cd public && php -S 127.0.0.1:888`
+`cd public && php -S 127.0.0.1:8880`
+
+- 使用 php -S 127.0.0.1:888 index.php （路由模式）命令运行 PHP 内置服务器时，所有请求都路由到 index.php 文件 
+- 如果不指定路由脚本，使用 php -S 127.0.0.1:888（没有 index.php，标准模式）
+  - 首先尝试直接提供请求的文件（即在路径中带后缀名），如果不存在则返回404，且不会进入index.php
+  - 如果请求的是目录，则查找目录中的 index.php 或 index.html
 
 # 目录结构
 

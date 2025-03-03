@@ -2,8 +2,9 @@
 
 use LiteView\Kernel\Route;
 
+
 Route::get('/', function () {
-    return lite_view('welcome.twig');
+    return LiteView\Kernel\View::renderTwig('welcome.twig');
 });
 
 
