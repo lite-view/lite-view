@@ -1,10 +1,14 @@
 # lite-view是什么
+
 > lite-view是基于php-fpm架构开发的一款超轻量的PHP web开发框架，它学习了laravel，YII，thinkPHP等框架易用，快速，灵活等优点。
 
-### 为什么不直接用laravel，YII等框架 
-- 对于类似h5等营销活动等小项目，可能会达到上千的并发访问数，在服务器有数量只有一台的情况下laravel基本办不到。如果对性能要求更高，推荐[webman](https://github.com/walkor/webman)
-- 接近原生，限制少，约定少，可定制性好
+### 为什么不直接用laravel，YII等框架
 
+-
+
+对于类似h5等营销活动等小项目，可能会达到上千的并发访问数，在服务器有数量只有一台的情况下laravel基本办不到。如果对性能要求更高，推荐[webman](https://github.com/walkor/webman)
+
+- 接近原生，限制少，约定少，可定制性好
 
 # lite-view具有以下特点
 
@@ -24,20 +28,9 @@ location / {
 }
 ```
 
-3. 初始化项目，生成配置文件
-
-```
-php assist init
-```
-
 # 启动本地调试服务
 
 `cd public && php -S 127.0.0.1:8880`
-
-- 使用 php -S 127.0.0.1:888 index.php （路由模式）命令运行 PHP 内置服务器时，所有请求都路由到 index.php 文件 
-- 如果不指定路由脚本，使用 php -S 127.0.0.1:888（没有 index.php，标准模式）
-  - 首先尝试直接提供请求的文件（即在路径中带后缀名），如果不存在则返回404，且不会进入index.php
-  - 如果请求的是目录，则查找目录中的 index.php 或 index.html
 
 # 目录结构
 
@@ -170,18 +163,22 @@ public function hello(Visitor $visitor)
 ```
 
 ## 中间件
+
 - 中间件一般用于拦截请求或者响应。例如执行控制器前统一验证用户身份，如用户未登录时跳转到登录页面，例如响应中增加某个header头。
 - 中间件的指定需要添加到路由中，中件间按添加时的顺序执行，示例
+
 ```
 Route::get('/', function () {
     return 'index';
 }, ['SayHello']);
 ```
+
 - 中间件分为前置和后置，前置是指执行控制器方法前执行，后置是指执行控制器方法后执行
 - 中间件就是一个普通的类，，只是做了一些约定如下：
-  - 前置中间件约定方法名称为：handle，lite-view 会自动将请求封装成一个 Visitor 作为第一个参数，如果返回不为0，请求将会终止并输出返回信息
-  - 后置中间件约定方法名称为：after，lite-view 会自动将请求封装成一个 Visitor 作为第一个参数，将响应数组作为第二个参数
+    - 前置中间件约定方法名称为：handle，lite-view 会自动将请求封装成一个 Visitor 作为第一个参数，如果返回不为0，请求将会终止并输出返回信息
+    - 后置中间件约定方法名称为：after，lite-view 会自动将请求封装成一个 Visitor 作为第一个参数，将响应数组作为第二个参数
 - 示例：
+
 ```
 class SayHello
 {
@@ -199,14 +196,18 @@ class SayHello
 ```
 
 ## 视图
+
 视图文件是一个普通PHP代码，约定会从 resources/views 目录中加载，示例：
+
 ```
 lite_view('welcome.php');
 lite_view('test/test.php');
 ```
 
 ## 日志
-lite-view 使用 monolog/monolog 处理日志。默认有一个 main 配置，如果需要自定义日志请在 config/logging.php 中添加配置 
+
+lite-view 使用 monolog/monolog 处理日志。默认有一个 main 配置，如果需要自定义日志请在 config/logging.php 中添加配置
+
 ```
 # 默认的 main 
 Log::employ('main')->info('info');
@@ -228,26 +229,32 @@ Log::info('info);
 ```
 
 ## 配置文件
+
 > 配置文件分为两种
+
 1. config.json
+
 - 如果在 config.json 有环境配置如 `"app_env": "test"`
 - 那么如果存在 config.test.json 的话会自动加载该配置文件，会自动合并，注意，配置项的字段不能重名
 
 2. 在config/目录下PHP文件
+
 - 一些不会根据环境变化的配置信息可以写在这，自动将文件名作为配置字段名，注意，配置项的字段不能重名，
 
 - 获取所有配置
-cfg()
+  cfg()
 - 获取config/logging.php里的所有配置
-cfg('logging')
+  cfg('logging')
 - 如果配置是数组，可以通过.来获取数组内部元素的值，例如
-cfg('file.key1.key2');
+  cfg('file.key1.key2');
 - 默认值
-cfg($key, $default);
+  cfg($key, $default);
 
 # 数据库
+
 > 添加配置项
-在json文件中
+> 在json文件中
+
 ```
     "database": {
         "mysql": {
@@ -261,8 +268,10 @@ cfg($key, $default);
         }
     },
 ```
+
 在config/目录中
 新建database.php 文件，添加
+
 ```
 return [
     "mysql" => [
@@ -274,6 +283,7 @@ return [
 ```
 
 ## 查询
+
 ```
 use LiteView\SQL\Crud;
 use LiteView\SQL\Connect;
@@ -292,6 +302,7 @@ Connect::db()->prepare($sql)->fetchAll();
 ```
 
 ## Redis
+
 ```
 use LiteView\Redis\RedisCli;
 
@@ -302,6 +313,7 @@ RedisCli::usePrefix(); # 使前配置前缀，返回redis对象，和原生redis
 # 常用组件
 
 ## 验证器
+
 ```
 $rules = [
     ['type' => 'number', 'field' => 'a', 'label' => '数字', 'required' => true],
@@ -314,10 +326,13 @@ $rules = [
 ];
 Validate::work($visitor->input(),$rules,$data)
 ```
+
 ## Excel
+
 - 安装
-`composer require lite-view/excel`
+  `composer require lite-view/excel`
 - 使用
+
 ```
 $title = ['id' => '编号', 'name' => '姓名'];
 $data = [['id' => '1', 'name' => '张三'], ['id' => '2', 'name' => '李四']];
@@ -325,12 +340,13 @@ Excel::export($title, $data)->down(); //浏览器中下载
 Excel::export($title, $data)->save($path); //保存到本地
 ```
 
-
 ## 单元测试
+
 - 安装
-composer require --dev phpunit/phpunit
+  composer require --dev phpunit/phpunit
 - 使用
-新建文件 tests/TestConfig.php，用于测试数据库配置
+  新建文件 tests/TestConfig.php，用于测试数据库配置
+
 ```
 <?php
 use PHPUnit\Framework\TestCase;
@@ -350,9 +366,11 @@ class TestConfig extends TestCase
 ```
 
 ## 微信SDK
+
 - 安装
-composer require req-tencent/third-party
+  composer require req-tencent/third-party
 - 使用
+
 ```
 # 实现配置类
 use App\Demo\tps\LzljQdTp;
@@ -410,9 +428,11 @@ $userinfo = Gzh::base(new GzhConfig($appid))->user_info($openid);
 ```
 
 ## 微信支付SDK（V3）
+
 - 安装
-composer require req-tencent/weixin-pay
+  composer require req-tencent/weixin-pay
 - 使和
+
 ```
 # 在新建 config 目录下新建 wxpay.php
 return [
