@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Common\ExceptionManager;
 use LiteView\Kernel\Route;
 use LiteView\Kernel\View;
 use LiteView\Kernel\Visitor;
@@ -23,6 +24,7 @@ class Kernel
 
     public static function dispatch(Visitor $visitor): Kernel
     {
+        Dispatcher::$exceptionManager = new ExceptionManager();
         list($target, $params) = Route::match();
         if (empty($target)) {
             header("HTTP/1.1 404");

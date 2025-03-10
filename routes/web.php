@@ -14,15 +14,17 @@ Route::post('log', 'App\Demo\Controllers\DemoController@log');
 
 Route::group(['prefix' => 'group', 'middleware' => []], function () {
     Route::get('exception', function () {
-        class X extends \LiteView\Support\ExceptionHandler
+        class X
         {
+            public $use = true;
+
             public function handle(array $e, \Throwable $exception = null)
             {
-                echo '自定义异常处理';
+                echo '自定义异常处理 : ' . json_encode($e);
             }
         }
 
-        new X();
+        \LiteView\Support\Dispatcher::$exceptionManager = new X();
 
         throw new \Exception('my exception');
     });
