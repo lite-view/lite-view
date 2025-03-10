@@ -25,10 +25,11 @@ class Kernel
     public static function dispatch(Visitor $visitor): Kernel
     {
         Dispatcher::$exceptionManager = new ExceptionManager();
+        View::setVisitor($visitor);
         list($target, $params) = Route::match();
         if (empty($target)) {
             header("HTTP/1.1 404");
-            return new self('route not found');
+            return new self(View::renderTwig('404.twig'));
         }
 
         $middleware = [];
@@ -53,7 +54,6 @@ class Kernel
             }
         }
 
-        View::setVisitor($visitor);
         $response = Dispatcher::work($target, $args, $visitor);
         return new self($response);
     }
