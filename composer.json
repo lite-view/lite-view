@@ -15,7 +15,6 @@
         "lite-view/sql": "^0.1.0",
         "lite-view/redis": "^0.1.0",
         "lite-view/curl": "^0.1.0",
-        "ext-redis": "*",
         "ext-json": "*",
         "ext-pdo": "*",
         "ext-curl": "*",

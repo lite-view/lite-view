@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\Common\ExceptionManager;
 use LiteView\Kernel\Route;
 use LiteView\Kernel\View;
 use LiteView\Kernel\Visitor;
