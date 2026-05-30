@@ -9,22 +9,22 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0c0c0f;
-            --bg-secondary: #131318;
-            --bg-card: #16161e;
-            --bg-hover: #1c1c26;
-            --border: #272736;
-            --border-light: #35354a;
-            --text-primary: #e8e8ec;
-            --text-secondary: #8b8b9a;
-            --text-muted: #5c5c6d;
-            --accent-php: #8892bf;
-            --accent-amber: #d4a574;
-            --accent-mint: #7ec699;
-            --accent-coral: #e06c75;
-            --accent-sky: #61afef;
-            --glow-php: rgba(136, 146, 191, 0.15);
-            --glow-amber: rgba(212, 165, 116, 0.12);
+            --bg-primary: #f5f5f7;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-hover: #f0f0f3;
+            --border: #e2e2e8;
+            --border-light: #eaeaf0;
+            --text-primary: #1a1a2e;
+            --text-secondary: #5c5c6d;
+            --text-muted: #9ca3af;
+            --accent-php: #6b77a8;
+            --accent-amber: #b88450;
+            --accent-mint: #5da87a;
+            --accent-coral: #c7545c;
+            --accent-sky: #4a9ed9;
+            --glow-php: rgba(107, 119, 168, 0.12);
+            --glow-amber: rgba(184, 132, 80, 0.08);
         }
 
         * {
@@ -64,7 +64,7 @@
             width: 60%;
             height: 60%;
             background: radial-gradient(ellipse, var(--glow-php) 0%, transparent 70%);
-            opacity: 0.4;
+            opacity: 0.7;
         }
 
         .ambient-glow::after {
@@ -75,7 +75,7 @@
             width: 50%;
             height: 50%;
             background: radial-gradient(ellipse, var(--glow-amber) 0%, transparent 70%);
-            opacity: 0.3;
+            opacity: 0.5;
         }
 
         /* Code background pattern */
@@ -84,7 +84,7 @@
             inset: 0;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.025;
+            opacity: 0.055;
             font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
             line-height: 1.8;
@@ -333,7 +333,7 @@
         .feature-card:hover {
             border-color: var(--border-light);
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.12);
         }
 
         .feature-card:hover::before {
@@ -377,7 +377,7 @@
             border: 1px solid var(--border);
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.15);
         }
 
         .terminal-header {
