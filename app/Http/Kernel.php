@@ -26,6 +26,10 @@ class Kernel
         Dispatcher::$exceptionManager = new ExceptionManager();
         View::setVisitor($visitor);
         list($target, $params) = Route::match();
+
+        // 发送 CORS 响应头
+        cors(Route::currentPath());
+
         if (empty($target)) {
             header("HTTP/1.1 404");
             return new self(View::renderTwig('404.twig'));
@@ -72,6 +76,7 @@ class Kernel
             if (is_string($rsp) || is_numeric($rsp)) {
                 echo $rsp;
             } else {
+                header('Content-Type: application/json; charset=utf-8');
                 echo json_encode($rsp, JSON_UNESCAPED_UNICODE);
             }
         }

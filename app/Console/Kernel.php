@@ -31,7 +31,7 @@ class Kernel
             $arr = pathinfo($file);
             $class = '\\App\\Console\\Commands\\' . $arr['filename'];
             $cmd = new $class($argv);
-            $commands[] = $cmd->signature . str_repeat(' ', 50 - strlen($cmd->signature)) . '# ' . $cmd->brief;
+            $commands[] = $cmd->signature . str_repeat(' ', max(0, 50 - strlen($cmd->signature))) . '# ' . $cmd->brief;
         }
         echo implode(PHP_EOL, $commands);
     }
