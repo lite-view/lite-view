@@ -1,34 +1,47 @@
-<div class="bg-white rounded-lg shadow-xl p-8 text-center">
-    <h1 class="text-5xl font-extrabold mb-6  ">
-        测试
-    </h1>
-    <p class="text-lg mb-8 text-gray-200">
-        点击进行测试相关功能
-    </p>
-
-    <!-- 按钮组 -->
-    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <a href="/hello" class="btn">
-            hello world
-        </a>
-        <a href="/db" class="btn">
-            数据库测试
-        </a>
-        <a href="javascript:log()" class="btn">
-            日志测试
-        </a>
-        <a href="/group/exception" class="btn">
-            exception
-        </a>
-        <a href="/group/error" class="btn">
-            error
-        </a>
-        <a href="/group/test/curl" class="btn">
-            curl 测试
-        </a>
-        <a href="/group/test/render" class="btn">
-            视图 render 测试
-        </a>
+<div class="terminal-window">
+    <div class="terminal-header">
+        <span class="terminal-btn red"></span>
+        <span class="terminal-btn yellow"></span>
+        <span class="terminal-btn green"></span>
+        <span class="terminal-title">lite-view — playground</span>
+    </div>
+    <div class="terminal-body">
+        <div class="terminal-prompt">
+        <span class="prompt-path">~/lite-view</span>
+        <span class="prompt-symbol">$</span>
+        php assist list
+        </div>
+        <div class="terminal-grid">
+            <a href="/hello" class="cmd-link">
+                <span><span class="cmd-dolla">$</span> <span class="cmd-name">hello</span></span>
+                <span class="cmd-arrow">→</span>
+            </a>
+            <a href="/db" class="cmd-link">
+                <span><span class="cmd-dolla">$</span> <span class="cmd-name">db</span></span>
+                <span class="cmd-arrow">→</span>
+            </a>
+            <a href="javascript:void(0)" onclick="log()" class="cmd-link">
+                <span><span class="cmd-dolla">$</span> <span class="cmd-name">log</span> <span style="color:var(--text-muted)">--post</span></span>
+                <span class="cmd-arrow">→</span>
+                <span class="cmd-cursor"></span>
+            </a>
+            <a href="/group/exception" class="cmd-link">
+                <span><span class="cmd-dolla">$</span> <span class="cmd-name">exception</span></span>
+                <span class="cmd-arrow">→</span>
+            </a>
+            <a href="/group/error" class="cmd-link">
+                <span><span class="cmd-dolla">$</span> <span class="cmd-name">error</span></span>
+                <span class="cmd-arrow">→</span>
+            </a>
+            <a href="/group/test/curl" class="cmd-link">
+                <span><span class="cmd-dolla">$</span> <span class="cmd-name">curl</span> <span style="color:var(--text-muted)">--test</span></span>
+                <span class="cmd-arrow">→</span>
+            </a>
+            <a href="/group/test/render" class="cmd-link">
+                <span><span class="cmd-dolla">$</span> <span class="cmd-name">render</span> <span style="color:var(--text-muted)">--view</span></span>
+                <span class="cmd-arrow">→</span>
+            </a>
+        </div>
     </div>
 </div>
 
@@ -36,7 +49,6 @@
     function xhr(fd, url) {
         var request = new XMLHttpRequest();
         request.open('POST', url);
-
         request.onreadystatechange = function () {
             if (request.readyState === 4) {
                 if (request.status === 200) {

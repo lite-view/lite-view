@@ -1,10 +1,108 @@
- {% extends "layouts/app.twig" %}
+{% extends "layouts/app.twig" %}
 
- {% block title %}
-    lite-view
- {% endblock %}
+{% block title %}
+lite-view — 轻量 PHP 框架
+{% endblock %}
 
- {% block content %}
-    {% include "test/test.twig" %}
- {% endblock %}
+{% block content %}
+    <header class="site-header fade-in-up">
+        <div class="container">
+            <a href="/" class="logo">
+                <span class="logo-mark">&lt;?php</span>
+                <span class="logo-text">lite-view</span>
+            </a>
+            <span class="version-badge">v4.0</span>
+        </div>
+    </header>
 
+    <section class="hero fade-in-up delay-1">
+        <div class="container">
+            <h1 class="hero-title">
+                <span class="brace-left">{</span>
+                <span class="name">lite-view</span>
+                <span class="brace-right">}</span>
+                <span class="cursor"></span>
+            </h1>
+            <p class="hero-subtitle">
+                一款超轻量的 PHP Web 框架。核心文件极少，性能接近原生 PHP，却能复用几乎所有 Composer 生态。
+            </p>
+            <div class="hero-meta">
+                <span class="tag">
+                    <span class="tag-dot php"></span>
+                    PHP 7.2+
+                </span>
+                <span class="dot"></span>
+                <span class="tag">
+                    <span class="tag-dot mint"></span>
+                    FPM
+                </span>
+                <span class="dot"></span>
+                <span class="tag">
+                    <span class="tag-dot amber"></span>
+                    Composer
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <section class="features fade-in-up delay-3">
+        <div class="container">
+            <div class="section-label">// features</div>
+            <div class="features-grid">
+                <div class="feature-card fade-in-up delay-4">
+                    <div class="feature-icon">
+                        <span class="php-tag">&lt;?php</span>
+                        <span class="php-name"> lightweight</span>
+                        <span class="php-symbol">();</span>
+                    </div>
+                    <h3 class="feature-title">轻如鸿毛</h3>
+                    <p class="feature-desc">
+                        核心文件极少，无冗余抽象层。性能接近原生 PHP 书写，在单台服务器上轻松应对高并发请求。
+                    </p>
+                </div>
+                <div class="feature-card fade-in-up delay-5">
+                    <div class="feature-icon">
+                        <span class="php-tag">use</span>
+                        <span class="php-name"> Composer</span>
+                        <span class="php-symbol">\</span>
+                        <span class="php-string">Packages</span>
+                        <span class="php-symbol">;</span>
+                    </div>
+                    <h3 class="feature-title">零摩擦复用</h3>
+                    <p class="feature-desc">
+                        无需任何修改即可复用几乎所有 Composer 组件与类库。生态即框架，不重复造轮子。
+                    </p>
+                </div>
+                <div class="feature-card fade-in-up delay-6">
+                    <div class="feature-icon">
+                        <span class="php-name">Route</span>
+                        <span class="php-symbol">::</span>
+                        <span class="php-string">get</span>
+                        <span class="php-symbol">(</span>
+                        <span class="php-string">'/'</span>
+                        <span class="php-symbol">);</span>
+                    </div>
+                    <h3 class="feature-title">极简上手</h3>
+                    <p class="feature-desc">
+                        学习成本极低，代码书写与传统框架没有区别。约定少，限制少，可定制性极佳。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="terminal-section fade-in-up delay-7">
+        <div class="container">
+            <div class="section-label">// playground</div>
+            {% include "test/test.twig" %}
+        </div>
+    </section>
+
+    <footer class="site-footer fade-in-up delay-8">
+        <div class="container">
+            <p>
+                lite-view/framework · <a href="https://github.com/lite-view/framework" target="_blank">GitHub</a> · MIT License
+            </p>
+        </div>
+    </footer>
+{% endblock %}

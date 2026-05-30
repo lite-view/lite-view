@@ -1,0 +1,20 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}
+404 — Page Not Found
+{% endblock %}
+
+{% block content %}
+<div class="error-page fade-in-up">
+    <div class="error-code">
+        <span class="comment">//</span> 404
+    </div>
+    <p class="error-message fade-in-up delay-2">
+        未定义的路由。你寻找的页面不在这个命名空间里。<br>
+        <span style="color:var(--text-muted); font-family:'JetBrains Mono',monospace; font-size:0.8rem;">Undefined route: the page you're looking for doesn't exist.</span>
+    </p>
+    <a href="/" class="error-back fade-in-up delay-3">
+        <span>&lt;</span> 返回首页
+    </a>
+</div>
+{% endblock %}
