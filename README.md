@@ -1,160 +1,73 @@
-# lite-view是什么
+# lite-view
 
-> lite-view是基于php-fpm架构开发的一款超轻量的PHP web开发框架，它学习了laravel，YII，thinkPHP等框架易用，快速，灵活等优点。
+> 基于 PHP-FPM 架构的超轻量 Web 开发框架。核心文件极少，性能接近原生 PHP，却能复用几乎所有 Composer 生态。
 
-### 为什么不直接用laravel，YII等框架
+---
 
--
+## 特点
 
-对于类似h5等营销活动等小项目，可能会达到上千的并发访问数，在服务器有数量只有一台的情况下laravel基本办不到。如果对性能要求更高，推荐[webman](https://github.com/walkor/webman)
+- **高性能** — 框架核心文件极少，无冗余抽象层，性能接近原生 PHP。
+- **高复用** — 无需修改，即可复用几乎所有 Composer 组件及类库。
+- **极简易用** — 学习成本极低，代码书写与传统框架没有区别。限制少，约定少，可定制性极佳。
 
-- 接近原生，限制少，约定少，可定制性好
+---
 
-# lite-view具有以下特点
+## 安装
 
-- 高性能。框架核心文件极少，接近原生PHP书写的性能
-- 高复用。无需修改，可以复用几乎所有composer组件及类库。
-- 超级简单易用，学习成本极低，代码书写与传统框架没有区别。
-
-# 安装
-
-1. `composer create-project lite-view/lite-view <project-name>`
-
-2. nginx 添加配置
-
+```bash
+composer create-project lite-view/lite-view <project-name>
 ```
+
+### Nginx 配置
+
+```nginx
 location / {
     try_files $uri $uri/ /index.php?$query_string;
 }
 ```
 
-# 启动本地调试服务
+### 启动本地调试
 
-`cd public && php -S 127.0.0.1:8880`
+```bash
+cd public && php -S 127.0.0.1:8880
+```
 
-# 目录结构
+---
+
+## 目录结构
 
 ```
 ├── app
-│       ├── Common # 公共方法
-│       ├── Console # 命令行
-│       ├── Demo # 入门示例，可删除
-│       └── Http
-│               ├── Middleware # 中件间都放这里
-│               └── Kernel.php # 框架核心，主要用于分发请求和返回响应
-├── config # 配置文件
+│   ├── Common          # 公共方法
+│   ├── Console         # 命令行
+│   │   ├── Commands    # 命令类
+│   │   └── Kernel.php  # 命令调度
+│   ├── Demo            # 入门示例（可删除）
+│   └── Http
+│       ├── Middleware  # 中间件
+│       ├── Kernel.php    # HTTP 请求调度与响应
+│       └── ExceptionManager.php
+├── config              # 配置文件
+│   ├── cors.php
+│   └── logging.php
 ├── public
-│       ├── .htaccess # apache 服务器配置
-│       └── index.php # 入口文件
+│   ├── .htaccess
+│   └── index.php       # 入口文件
 ├── resources
-│       └── views # 视图都放这里
-├── routes # 路由都都这里
-│       └── web.php # 路由示例
-├── composer.json # composer 配置
-└── assist # 命令行助手入口
- ```
+│   └── views           # Twig / PHP 视图
+├── routes
+│   └── web.php         # 路由定义
+├── composer.json
+└── assist              # CLI 入口脚本
+```
 
-# 入门示例
-
-参考：App\Demo\Controllers\DemoController.php
-
-# 基础功能
+---
 
 ## 请求
 
-lite-view 会自动将请求封装成一个 Visitor 对象注入到 action 方法的第一个参数，例如
+框架会自动将 HTTP 请求封装为 `Visitor` 对象，注入到控制器方法的第一个参数：
 
-```
-    public function hello(Visitor $visitor)
-    {
-        $name = $visitor->get('name', 'lite-view');
-        return ['name' => $name];
-    }
-```
-
-- 通过`$visitor`对象我们能获取到请求相关的任何数据。
-- 获取整个get数组`$visitor->get();`
-- 获取get数组的某一个值`$visitor->get('name',$default_value);`
-- 获取整个post数组 `$visitor->post();`
-- 获取post数组的某一个值`$visitor->post('name',$default_value);`
-- 从post get 数组合并在一起 `$visitor->input();`
-- 从post get 数组中获某个值 `$visitor->input('name',$default_value);`
-
-```
-// 获取 username 和 password 组成的数组，如果对应的key没有则忽略
-$only = $request->only(['username', 'password']);
-// 获得除了avatar 和 age 以外的所有输入
-$except = $request->except(['avatar', 'age']);
-```
-
-- 获取请求路径 $visitor->currentPath();
-- 获取请求uri $visitor->currentUri();
-
-## 响应
-
-lite-view 会自动判断 action 返回的数据类型并输出，参考：App\Http\Kernel@response
-
-```
-    public function response()
-    {
-        $rsp = $this->data;
-        if (!is_null($rsp) && !is_bool($rsp)) {
-            if (is_string($rsp) || is_numeric($rsp)) {
-                echo $rsp;
-            } else {
-                echo json_encode($rsp, JSON_UNESCAPED_UNICODE);
-            }
-        }
-    }
-```
-
-## 路由和控制器
-
-路由文件放在 routes 目录下，入口文件会自动加载路由文件
-
-- 闭包路由
-
-```
-Route::any('test', function (Visitor $visitor) {
-    return 'test';
-});
-```
-
-- 类路由
-
-```
-// get 路由
-Route::get('/testclass', [app\controller\IndexController::class, 'test']);
-//post 路由
-Route::post('/testclass', [app\controller\IndexController::class, 'test']);
-// 同时指定 get 和 post 路由
-Route::any('/testclass', [app\controller\IndexController::class, 'test']);
-```
-
-- 路由分组
-
-```
-Route::group(['prefix' => 'group', 'middleware' => []], function () {
-    Route::get('exception', function () {
-        throw new \Exception('my exception');
-    });
-    Route::get('error', function () {
-        echo $no;
-    });
-
-    Route::group(['prefix' => 'test', 'middleware' => []], function () {
-        Route::any('curl', 'App\Demo\Controllers\DemoController@curl');
-        Route::any('render', 'App\Demo\Controllers\DemoController@render');
-    });
-});
-```
-
-控制器就是一个普通的类，如果在路由中添加了控制器的方法，lite-view 会自动将请求封装成一个 Visitor 对象注入到控制器方法的第一个参数，例如
-
-```
-Route::get('hello', [\App\Demo\Controllers\DemoController::class, 'hello']);
-
-# hello 方法
+```php
 public function hello(Visitor $visitor)
 {
     $name = $visitor->get('name', 'lite-view');
@@ -162,319 +75,305 @@ public function hello(Visitor $visitor)
 }
 ```
 
+### 常用方法
+
+| 方法 | 说明 |
+|---|---|
+| `$visitor->get()` | 获取整个 `$_GET` 数组 |
+| `$visitor->get('key', $default)` | 获取 GET 参数 |
+| `$visitor->post()` | 获取整个 `$_POST` 数组 |
+| `$visitor->post('key', $default)` | 获取 POST 参数 |
+| `$visitor->input()` | 合并 `$_GET` + `$_POST` + JSON Body |
+| `$visitor->input('key', $default)` | 从合并数组中获取值 |
+| `$visitor->only(['a', 'b'])` | 仅保留指定字段 |
+| `$visitor->except(['a', 'b'])` | 排除指定字段 |
+| `$visitor->currentPath()` | 当前请求路径 |
+| `$visitor->currentUri()` | 当前完整 URI（含 query） |
+
+---
+
+## 响应
+
+框架会自动判断 Action 返回值并输出：
+
+- `string` / `numeric` — 直接输出
+- `array` / `object` — 自动 `json_encode` 并设置 `Content-Type: application/json`
+- `null` / `bool` — 无输出
+
+---
+
+## 路由与控制器
+
+路由文件放在 `routes/` 目录下，入口文件会自动加载。
+
+### 闭包路由
+
+```php
+Route::any('test', function (Visitor $visitor) {
+    return 'test';
+});
+```
+
+### 控制器路由
+
+```php
+Route::get('/test', [app\controller\IndexController::class, 'test']);
+Route::post('/test', [app\controller\IndexController::class, 'test']);
+Route::any('/test', [app\controller\IndexController::class, 'test']);
+```
+
+### 路由分组
+
+```php
+Route::group(['prefix' => 'group', 'middleware' => []], function () {
+    Route::get('exception', function () {
+        throw new \Exception('my exception');
+    });
+
+    Route::group(['prefix' => 'test', 'middleware' => []], function () {
+        Route::any('curl', 'App\Demo\Controllers\DemoController@curl');
+    });
+});
+```
+
+### 快捷路由
+
+```php
+// RESTful API 资源路由
+Route::apiResource('users', UserController::class, $middleware);
+
+// 自动映射控制器所有公有方法
+Route::quick('admin', AdminController::class, $middleware);
+```
+
+---
+
 ## 中间件
 
-- 中间件一般用于拦截请求或者响应。例如执行控制器前统一验证用户身份，如用户未登录时跳转到登录页面，例如响应中增加某个header头。
-- 中间件的指定需要添加到路由中，中件间按添加时的顺序执行，示例
+中间件用于拦截请求或响应，例如统一鉴权、追加 Header 等。
 
-```
+在路由中指定，按添加顺序执行：
+
+```php
 Route::get('/', function () {
     return 'index';
 }, ['SayHello']);
 ```
 
-- 中间件分为前置和后置，前置是指执行控制器方法前执行，后置是指执行控制器方法后执行
-- 中间件就是一个普通的类，，只是做了一些约定如下：
-    - 前置中间件约定方法名称为：handle，lite-view 会自动将请求封装成一个 Visitor 作为第一个参数，如果返回不为0，请求将会终止并输出返回信息
-    - 后置中间件约定方法名称为：after，lite-view 会自动将请求封装成一个 Visitor 作为第一个参数，将响应数组作为第二个参数
-- 示例：
+中间件是一个普通类，需实现 `handle(Visitor $visitor, \Closure $next)` 方法：
 
-```
+```php
+namespace App\Http\Middleware;
+
+use LiteView\Kernel\Visitor;
+
 class SayHello
 {
-    public function handle(Visitor $visitor)
+    public function handle(Visitor $visitor, \Closure $next)
     {
-        echo '<div style="text-align: center;height: 100px;">hello LiteView</div>';
-        return 0;
-    }
-
-    public function after(Visitor $visitor, &$data=null)
-    {
-        echo '<div style="text-align: center;height: 100px;">处理完成后！</div>';
+        // 前置逻辑
+        $response = $next($visitor);
+        // 后置逻辑
+        return $response;
     }
 }
 ```
+
+---
 
 ## 视图
 
-视图文件是一个普通PHP代码，约定会从 resources/views 目录中加载，示例：
+使用 Twig 模板引擎，视图文件放在 `resources/views/`：
 
+```php
+use LiteView\Kernel\View;
+
+return View::renderTwig('welcome.twig', ['name' => 'lite-view']);
 ```
-lite_view('welcome.php');
-lite_view('test/test.php');
+
+也支持原生 PHP 视图：
+
+```php
+return View::renderFile('test/test.php', ['time' => time()]);
 ```
+
+---
 
 ## 日志
 
-lite-view 使用 monolog/monolog 处理日志。默认有一个 main 配置，如果需要自定义日志请在 config/logging.php 中添加配置
+使用 `monolog/monolog`。默认提供 `main` 通道，也可在 `config/logging.php` 中自定义。
 
+```php
+use LiteView\Utils\Log;
+
+Log::info('user login');
+Log::employ('default')->error('db connection failed');
 ```
-# 默认的 main 
-Log::employ('main')->info('info');
 
-# 自定义配置
-return [
-    "default" => [
-        "Handler" => \Monolog\Handler\RotatingFileHandler::class,  # 处理器
-        "path" => root_path("storage/logs/run.log"),  # 日志文件的位置
-        "level" => Logger::INFO, # 日志输出等级
-        "processors" => [   # 为日志记录添加额外的信息
-            \Monolog\Processor\MemoryUsageProcessor::class # 当前内存使用情况信息
-        ]
-    ]
-];
-
-# 调用
-Log::info('info);
-```
+---
 
 ## 配置文件
 
-> 配置文件分为两种
+### 1. `config.json`
 
-1. config.json
+项目根目录的主配置文件。支持环境覆盖：若 `app_env` 为 `test`，会自动加载同目录的 `config.test.json` 并合并。
 
-- 如果在 config.json 有环境配置如 `"app_env": "test"`
-- 那么如果存在 config.test.json 的话会自动加载该配置文件，会自动合并，注意，配置项的字段不能重名
+> 注意：合并后字段不能重名。
 
-2. 在config/目录下PHP文件
+### 2. `config/*.php`
 
-- 一些不会根据环境变化的配置信息可以写在这，自动将文件名作为配置字段名，注意，配置项的字段不能重名，
+不变的配置可写为 PHP 文件，文件名自动作为配置键名：
 
-- 获取所有配置
-  cfg()
-- 获取config/logging.php里的所有配置
-  cfg('logging')
-- 如果配置是数组，可以通过.来获取数组内部元素的值，例如
-  cfg('file.key1.key2');
-- 默认值
-  cfg($key, $default);
-
-# 数据库
-
-> 添加配置项
-> 在json文件中
-
+```php
+// config/logging.php
+return [
+    'default' => [
+        'handlers' => [
+            new \Monolog\Handler\RotatingFileHandler(root_path('storage/logs/run.log'), 7, Logger::INFO),
+        ],
+    ],
+];
 ```
+
+### 读取配置
+
+```php
+cfg();                // 获取全部配置
+cfg('logging');       // 获取 logging 配置
+cfg('logging.default'); // 点号访问数组内部
+cfg('key', $default); // 带默认值
+```
+
+---
+
+## 数据库
+
+在 `config.json` 或 `config/database.php` 中添加：
+
+```json
+{
     "database": {
         "mysql": {
             "driver": "mysql",
-            "host": "host",
+            "host": "localhost",
             "port": 3306,
-            "username": "username",
-            "password": "password",
-            "dbname": "dbname",
+            "username": "root",
+            "password": "secret",
+            "dbname": "test",
             "charset": "utf8mb4"
         }
-    },
+    }
+}
 ```
 
-在config/目录中
-新建database.php 文件，添加
+### CRUD 查询
 
-```
-return [
-    "mysql" => [
-       "driver"=> "mysql",
-       "host"=> "host",
-       "port"=> 3306,
-    ]
-];
-```
-
-## 查询
-
-```
+```php
 use LiteView\SQL\Crud;
 use LiteView\SQL\Connect;
 
-# 查一条
+// 查询
 Crud::db()->select('users', 'id > 0')->prep()->one();
-# 查全部
 Crud::db()->select('users', 'id > 0')->prep()->all();
-# 分页
 Crud::db()->select('users', 'id > 0')->prep()->paginate();
-# 单个字段 
 Crud::db()->select('users', 'id > 0')->prep()->column();
 
-# 执行原生SQL
+// 原生 SQL
 Connect::db()->prepare($sql)->fetchAll();
 ```
 
+---
+
 ## Redis
 
-```
+```php
 use LiteView\Redis\RedisCli;
 
-RedisCli::select(); # 不使前配置前缀，返回redis对象，和原生redis的API一至
-RedisCli::usePrefix(); # 使前配置前缀，返回redis对象，和原生redis的API一至
+RedisCli::select();     // 无配置前缀，返回原生 Redis 对象
+RedisCli::usePrefix();  // 使用配置前缀，返回原生 Redis 对象
 ```
 
-# 常用组件
+---
 
-## 验证器
+## CORS
 
-```
-$rules = [
-    ['type' => 'number', 'field' => 'a', 'label' => '数字', 'required' => true],
-    ['type' => 'string', 'field' => 'b', 'label' => '字符串', 'required' => true],
-    ['type' => 'phone', 'field' => 'c', 'label' => '电话号', 'required' => true],
-    ['type' => 'enum', 'field' => 'd', 'label' => '枚举', 'required' => true, 'list'=>[1,2]],
-    ['type' => 'ascii', 'field' => 'e', 'label' => 'ASCII 码', 'required' => true],
-    ['type' => 'date', 'field' => 'f', 'label' => '日期', 'required' => true],
-    ['type' => 'IDCard', 'field' => 'h', 'label' => '身份证', 'required' => true],
-];
-Validate::work($visitor->input(),$rules,$data)
-```
+在 `config/cors.php` 中配置：
 
-## Excel
-
-- 安装
-  `composer require lite-view/excel`
-- 使用
-
-```
-$title = ['id' => '编号', 'name' => '姓名'];
-$data = [['id' => '1', 'name' => '张三'], ['id' => '2', 'name' => '李四']];
-Excel::export($title, $data)->down(); //浏览器中下载
-Excel::export($title, $data)->save($path); //保存到本地
-```
-
-## 单元测试
-
-- 安装
-  composer require --dev phpunit/phpunit
-- 使用
-  新建文件 tests/TestConfig.php，用于测试数据库配置
-
-```
-<?php
-use PHPUnit\Framework\TestCase;
-
-class TestConfig extends TestCase
-{
-    public function testAppConfig()
-    {
-        $config = cfg();
-        self::assertIsArray($config);
-        self::assertArrayHasKey('debug', $config);
-        self::assertIsBool($config['debug']);
-        self::assertArrayHasKey('default_timezone', $config);
-        self::assertIsString($config['default_timezone']);
-    }
-}
-```
-
-## 微信SDK
-
-- 安装
-  composer require req-tencent/third-party
-- 使用
-
-```
-# 实现配置类
-use App\Demo\tps\LzljQdTp;
-use LiteView\Curl\Lite;
-use ReqTencent\Weixin\Official\Contracts\GzhApiInterface;
-use ReqTencent\Weixin\ThirdParty\ThirdParty;
-
-
-class GzhConfig implements GzhApiInterface
-{
-
-    private $appid;
-
-    public function __construct($appid)
-    {
-        $this->appid = $appid;
-    }
-
-    public function appid()
-    {
-        return $this->appid;
-    }
-
-    public function secret()
-    {
-        // TODO: Implement secret() method.
-    }
-
-    public function get_access_token()
-    {
-        // token 需要存起来
-    }
-
-    public function get($api)
-    {
-        $rsp = Lite::request()->get($api);
-        return json_decode($rsp, true);
-    }
-
-    public function post($api, $json)
-    {
-        $rsp = Lite::request()->post($api, $json);
-        return json_decode($rsp, true);//
-    }
-
-    public function get_jsapi_ticket()
-    {
-        // TODO: Implement get_jsapi_ticket() method.
-    }
-}
-
-# 调用
-use ReqTencent\Weixin\Official\Gzh;
-$userinfo = Gzh::base(new GzhConfig($appid))->user_info($openid);
-```
-
-## 微信支付SDK（V3）
-
-- 安装
-  composer require req-tencent/weixin-pay
-- 使和
-
-```
-# 在新建 config 目录下新建 wxpay.php
+```php
 return [
-    'appid' => '',
-    'mchid' => '',
-    'v3Key' => '',
-    'sn' => '',
-    'notify_url' => '',
-    'private_key_path' => root_path('resources/wx_cert/001/apiclient_key.pem'),
-    'wechatpay_certificate_path' => root_path('resources/wx_cert/001/wechatpay_6A88078CFF6EE0113C4166D3B61937D958D1AECB.pem'),
+    'paths' => ['*'],
+    'allow_origins' => '*',
+    'allow_methods' => 'POST, GET, OPTIONS',
+    'allow_headers' => '*',
 ];
-
-# jsapi支付下单
-$pc = new PayCaller(cfg('wxpay'));
-$rsp = $pc->order('jsapi', $data); // 下单，参考微信文档
-$jsonString = $rsp->getBody()->getContents(); // 下单后的返回
-$data = $pc->jsApiPaySign(json_decode($jsonString)->prepay_id); // 支付签名
 ```
 
-# 命名的依据
+框架会在 `Kernel::dispatch()` 中自动根据当前路径调用 `cors()` 发送响应头。
 
-- app/Common 不需要引入第三方依赖
+---
 
-- app/Helpers 需要引入第三方依赖
+## 异常处理
 
-# 业务分层建议
+自定义异常处理器需实现 `handle(array $msg, \Throwable $exception = null)` 方法，并在 `Kernel.php` 中注册：
 
-- controller 层，在一个最简单的请求中，需要做以下动作：
-    1. 接收参数
-    2. 跟据参数查询数据
-    3. 返回数据
+```php
+Dispatcher::$exceptionManager = new ExceptionManager();
+```
 
-> 建议 controller 层只处理以上3件事
+通过设置 `$exceptionManager->use = true` 来启用自定义处理。
 
-- service 层
-    1. 查询
-    2. 参数验证
+---
 
-- Searches 层
-    1. 搜索条件组装
+## CLI 命令行
 
-- Formats 层
-    1. 返回数据格式化
+入口为项目根目录的 `assist` 文件：
 
-> 总的来说只要满足职责逻辑清晰，后续维护容易，就是好的分层。
+```bash
+php assist list          # 列出所有命令
+php assist init          # 初始化配置
+php assist version       # 查看版本
+php assist hello:aa      # 执行自定义命令
+```
+
+自定义命令放在 `app/Console/Commands/`，继承 `App\Console\Command`：
+
+```php
+class Hello extends Command
+{
+    public $signature = 'hello:(aa|bb|cc)';
+    public $brief = '使用示例';
+
+    public function handle()
+    {
+        list($nil, $fun) = explode(':', $this->args(1));
+        echo 'hello ' . $fun;
+        return 0;
+    }
+}
+```
+
+---
+
+## 命名约定
+
+| 目录 | 用途 |
+|---|---|
+| `app/Common` | 不依赖第三方包的公共方法 |
+| `app/Helpers` | 需要引入第三方依赖的辅助函数 |
+
+---
+
+## 业务分层建议
+
+- **Controller** — 只做三件事：接收参数、查询数据、返回数据。
+- **Service** — 业务逻辑、参数验证。
+- **Searches** — 搜索条件组装。
+- **Formats** — 返回数据格式化。
+
+> 只要职责清晰、易于维护，就是好的分层。
+
+---
+
+## License
+
+MIT
