@@ -63,6 +63,6 @@ class Kernel
 
     public function version()
     {
-        echo 'v0.1.9';
+        echo 'v0.3.0';
     }
 }
