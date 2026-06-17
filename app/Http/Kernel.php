@@ -24,12 +24,18 @@ class Kernel
     public static function dispatch(Visitor $visitor): Kernel
     {
         Dispatcher::$exceptionManager = new ExceptionManager();
-        View::setVisitor($visitor);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            cors(Route::currentPath());
+            header('HTTP/1.1 204 No Content');
+            return new self('');
+        }
+
         list($target, $params) = Route::match();
 
-        // 发送 CORS 响应头
         cors(Route::currentPath());
 
+        View::setVisitor($visitor);
         if (empty($target)) {
             header("HTTP/1.1 404");
             return new self(View::renderTwig('404.twig'));

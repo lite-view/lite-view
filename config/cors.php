@@ -11,10 +11,17 @@ return [
 
     'paths' => ['*'],
 
+    'allow_methods' => 'POST, GET, OPTIONS',
+
     'allow_origins' => '*',
 
-    'allow_methods' => 'POST, GET, OPTIONS',
+    'allowed_origins_patterns' => [],
 
     'allow_headers' => '*',
 
+    'exposed_headers' => [],
+
+    'max_age' => 0,
+
+    'supports_credentials' => false,
 ];
