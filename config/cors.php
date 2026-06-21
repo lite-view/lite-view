@@ -11,7 +11,7 @@ return [
 
     'paths' => ['*'],
 
-    'allow_methods' => 'POST, GET, OPTIONS',
+    'allow_methods' => '*',
 
     'allow_origins' => '*',
 
@@ -24,4 +24,5 @@ return [
     'max_age' => 0,
 
     'supports_credentials' => false,
+
 ];

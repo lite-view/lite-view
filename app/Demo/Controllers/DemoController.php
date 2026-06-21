@@ -8,7 +8,7 @@ use LiteView\Kernel\View;
 use LiteView\Kernel\Visitor;
 use LiteView\Redis\RedisCli;
 use LiteView\SQL\Crud;
-use LiteView\Utils\Log;
+use LiteView\Support\Log;
 
 
 class DemoController
@@ -33,7 +33,7 @@ class DemoController
     {
         $i = $visitor->input();
         Log::info(json_encode($i));
-        return ['message' => 'ok'];
+        return ['message' => 'ok ' . time()];
     }
 
     public function render()

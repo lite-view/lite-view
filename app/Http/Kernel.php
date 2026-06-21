@@ -6,6 +6,7 @@ use LiteView\Kernel\Route;
 use LiteView\Kernel\View;
 use LiteView\Kernel\Visitor;
 use LiteView\Support\Dispatcher;
+use LiteView\Exception\NotFoundException;
 
 class Kernel
 {
@@ -23,22 +24,21 @@ class Kernel
 
     public static function dispatch(Visitor $visitor): Kernel
     {
-        Dispatcher::$exceptionManager = new ExceptionManager();
+        Dispatcher::$exceptionManager = new ExceptionManager($visitor);
+        Dispatcher::$error_display    = '系统繁忙';
+
+        cors(Route::currentPath());
 
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-            cors(Route::currentPath());
             header('HTTP/1.1 204 No Content');
             return new self('');
         }
 
         list($target, $params) = Route::match();
 
-        cors(Route::currentPath());
-
         View::setVisitor($visitor);
         if (empty($target)) {
-            header("HTTP/1.1 404");
-            return new self(View::renderTwig('404.twig'));
+            throw new NotFoundException();
         }
 
         $middleware = [];

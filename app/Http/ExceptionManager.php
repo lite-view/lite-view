@@ -2,12 +2,28 @@
 
 namespace App\Http;
 
-class ExceptionManager
-{
-    public $use = false;
+use LiteView\Exception\NotFoundException;
+use LiteView\Kernel\View;
+use LiteView\Kernel\Visitor;
 
-    public function handle(array $msg, \Throwable $exception = null)
+class ExceptionManager extends \LiteView\Exception\ExceptionManager
+{
+    public bool $use = true;
+    public Visitor $visitor;
+
+    public function __construct(Visitor $visitor)
     {
-        dump($msg);
+        $this->visitor = $visitor;
+    }
+
+    public function handle(array $msg, ?\Throwable $exception = null): bool
+    {
+        if ($exception instanceof NotFoundException) {
+            http_response_code(404);
+            echo View::renderTwig('404.twig');
+            return true;
+        }
+
+        return false;
     }
 }
